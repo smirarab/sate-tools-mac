@@ -7,6 +7,10 @@ Mafft (mafft, disttbfast, dvtditr, pairlocalalign, tbfast):
     See the References section on http://mafft.cbrc.jp/alignment/software/
 RAxML: See the Publications section on
     http://wwwkramer.in.tum.de/exelixis/publications.html
+
+HMMER (used for starting tree):
+   Profile Hidden Markov Models. S. R. Eddy. Bioinformatics, 14:755-763, 1998.
+
 Opal: 
     Wheeler, T.J. and Kececioglu, J.D. "Multiple alignment by aligning
         alignments," Proceedings of the 15th ISCB Conference on Intelligent
