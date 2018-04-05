@@ -1,0 +1,195 @@
+####################################################
+# Topology configuration file for PROBCONS aligner #
+####################################################
+
+## Track definitions ###############################
+
+NewTrack {
+  name = SEQUENCE
+  suffix = ""
+}
+
+## Context definitions #############################
+
+NewContext {
+  name = MATCH_COMPRESSED_EMISSION
+  param = param_MATCH_COMPRESSED_EMISSION
+  state_type = StateType_MATCH
+  type = ContextType_EMISSION
+  track = SEQUENCE
+  level = 1
+  width = 1
+  groups = { AGPST C DENQ FWY HKR ILMV }
+}
+
+NewContext {
+  name = MATCH_EMISSION
+  param = param_MATCH_EMISSION
+  state_type = StateType_MATCH
+  type = ContextType_EMISSION
+  track = SEQUENCE
+  level = 2
+  width = 1
+  groups = { A R N D C Q E G H I L K M F P S T W Y V }
+}
+
+NewContext {
+  name = INSERT_COMPRESSED_EMISSION_X
+  param = param_INSERT_COMPRESSED_EMISSION
+  state_type = StateType_INSERT_X
+  type = ContextType_EMISSION
+  track = SEQUENCE
+  level = 1
+  width = 1
+  groups = { AGPST C DENQ FWY HKR ILMV }
+}
+
+NewContext {
+  name = INSERT_EMISSION_X
+  param = param_INSERT_EMISSION
+  state_type = StateType_INSERT_X
+  type = ContextType_EMISSION
+  track = SEQUENCE
+  level = 2
+  width = 1
+  groups = { A R N D C Q E G H I L K M F P S T W Y V }
+}
+
+NewContext {
+  name = INSERT_COMPRESSED_EMISSION_Y
+  param = param_INSERT_COMPRESSED_EMISSION
+  state_type = StateType_INSERT_Y
+  type = ContextType_EMISSION
+  track = SEQUENCE
+  level = 1
+  width = 1
+  groups = { AGPST C DENQ FWY HKR ILMV }
+}
+
+NewContext {
+  name = INSERT_EMISSION_Y
+  param = param_INSERT_EMISSION
+  state_type = StateType_INSERT_Y
+  type = ContextType_EMISSION
+  track = SEQUENCE
+  level = 2
+  width = 1
+  groups = { A R N D C Q E G H I L K M F P S T W Y V }
+}
+
+NewContext {
+  name = HYDROPHILIC_COUNT_X
+  param = param_HYDROPHILIC_COUNT
+  state_type = StateType_INSERT_X
+  type = ContextType_COUNT
+  track = SEQUENCE
+  level = 1
+  width = 6
+  groups = { DEGKNQPRS }
+}
+
+NewContext {
+  name = HYDROPHILIC_COUNT_Y
+  param = param_HYDROPHILIC_COUNT
+  state_type = StateType_INSERT_Y
+  type = ContextType_COUNT
+  track = SEQUENCE
+  level = 1
+  width = 6
+  groups = { DEGKNQPRS }
+}
+
+NewContext {
+  name = HYDROPHILIC_COUNT_X_CONTINUE
+  param = param_HYDROPHILIC_COUNT_CONTINUE
+  state_type = StateType_INSERT_X
+  type = ContextType_COUNT
+  track = SEQUENCE
+  level = 1
+  width = 6
+  groups = { DEGKNQPRS }
+}
+
+NewContext {
+  name = HYDROPHILIC_COUNT_Y_CONTINUE
+  param = param_HYDROPHILIC_COUNT_CONTINUE
+  state_type = StateType_INSERT_Y
+  type = ContextType_COUNT
+  track = SEQUENCE
+  level = 1
+  width = 6
+  groups = { DEGKNQPRS }
+}
+
+## State definitions ###############################
+
+NewState {
+  name = MATCH
+  param = param_MATCH_USAGE
+  type = StateType_MATCH
+  contexts = {
+    MATCH_COMPRESSED_EMISSION
+    MATCH_EMISSION
+  }
+}
+
+NewState {
+  name = INSERT_1_X
+  param = param_INSERT_1_USAGE
+  type = StateType_INSERT_X
+  contexts = { 
+    INSERT_COMPRESSED_EMISSION_X
+    INSERT_EMISSION_X
+  }
+}
+
+NewState {
+  name = INSERT_1_Y
+  param = param_INSERT_1_USAGE
+  type = StateType_INSERT_Y
+  contexts = {
+    INSERT_COMPRESSED_EMISSION_Y
+    INSERT_EMISSION_Y
+  }
+}
+
+NewState {
+  name = INSERT_2_X
+  param = param_INSERT_2_USAGE
+  type = StateType_INSERT_X
+  contexts = { 
+    INSERT_COMPRESSED_EMISSION_X
+    INSERT_EMISSION_X
+  }
+}
+
+NewState {
+  name = INSERT_2_Y
+  param = param_INSERT_2_USAGE
+  type = StateType_INSERT_Y
+  contexts = {
+    INSERT_COMPRESSED_EMISSION_Y
+    INSERT_EMISSION_Y
+  }
+}
+
+## Transition definitions ##########################
+
+NewTransition { from = MATCH      to = MATCH      param = param_MATCH_continue    contexts = { } }
+NewTransition { from = MATCH      to = INSERT_1_X param = param_MATCH_to_INSERT_1 contexts = { HYDROPHILIC_COUNT_Y } }
+NewTransition { from = MATCH      to = INSERT_1_Y param = param_MATCH_to_INSERT_1 contexts = { HYDROPHILIC_COUNT_X } }
+NewTransition { from = INSERT_1_X to = MATCH      param = param_INSERT_1_to_MATCH contexts = { HYDROPHILIC_COUNT_Y } }
+NewTransition { from = INSERT_1_Y to = MATCH      param = param_INSERT_1_to_MATCH contexts = { HYDROPHILIC_COUNT_X } }
+NewTransition { from = INSERT_1_X to = INSERT_1_X param = param_INSERT_1_continue contexts = { HYDROPHILIC_COUNT_Y_CONTINUE } }
+NewTransition { from = INSERT_1_X to = INSERT_1_Y param = param_INSERT_1_change   contexts = { } }
+NewTransition { from = INSERT_1_Y to = INSERT_1_X param = param_INSERT_1_change   contexts = { } }
+NewTransition { from = INSERT_1_Y to = INSERT_1_Y param = param_INSERT_1_continue contexts = { HYDROPHILIC_COUNT_X_CONTINUE } }
+
+NewTransition { from = MATCH      to = INSERT_2_X param = param_MATCH_to_INSERT_2 contexts = { HYDROPHILIC_COUNT_Y } }
+NewTransition { from = MATCH      to = INSERT_2_Y param = param_MATCH_to_INSERT_2 contexts = { HYDROPHILIC_COUNT_X } }
+NewTransition { from = INSERT_2_X to = MATCH      param = param_INSERT_2_to_MATCH contexts = { HYDROPHILIC_COUNT_Y } }
+NewTransition { from = INSERT_2_Y to = MATCH      param = param_INSERT_2_to_MATCH contexts = { HYDROPHILIC_COUNT_X } }
+NewTransition { from = INSERT_2_X to = INSERT_2_X param = param_INSERT_2_continue contexts = { HYDROPHILIC_COUNT_Y_CONTINUE } }
+NewTransition { from = INSERT_2_X to = INSERT_2_Y param = param_INSERT_2_change   contexts = { } }
+NewTransition { from = INSERT_2_Y to = INSERT_2_X param = param_INSERT_2_change   contexts = { } }
+NewTransition { from = INSERT_2_Y to = INSERT_2_Y param = param_INSERT_2_continue contexts = { HYDROPHILIC_COUNT_X_CONTINUE } }
