@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-localdb = "$CONTRALIGN_DIR/databases/swissprot"        
+localdb = "$CONTRALIGN_DIR/pasta-databases/swissprot"        
 # database name from which homologues are collected 
 # by locally installed blast. Leave this if you do 
 # not use the '-l' option.
@@ -9,7 +9,7 @@ mafftpath = "$CONTRALIGN_DIR/mafft"
 # path of mafft. "/usr/local/bin/mafft"
 # if mafft is in your command path, "mafft" is ok.
 
-blastpath = "$CONTRALIGN_DIR/databases/blastall"   
+blastpath = "$CONTRALIGN_DIR/pasta-databases/blastall"   
 # path of blastall. 
 # if blastall is in your command path, "blastall" is ok.
 
