@@ -23,10 +23,10 @@ if argc > 3:
             if arg.upper() == 'U':
                 ultrametric = True
             else:
-                seed = long(arg)
+                seed = int(arg)
     if seed is None:
         import time
-        seed = long(time.time() * 100000) & 0xFFFFFF
+        seed = int(time.time() * 100000) & 0xFFFFFF
 
     random.seed(seed)
     # sys.stderr.write("rand_tree.py seed = %d\n" % seed)
@@ -39,10 +39,10 @@ try:
     fileobj = open(seqfn, 'rU')
     sd.read(fileobj, file_format='FASTA', datatype=datatype)
     alignment = sd.relabel_for_sate(make_names_safe=False)
-except Exception, x:
+except Exception as x:
     raise Exception("Error reading file:\n%s\n" % str(x))
 
-taxa_names = alignment.keys()
+taxa_names = list(alignment.keys())
 random.shuffle(taxa_names)
 
 def rand_subtree(output, leaves, height=None):
@@ -81,5 +81,5 @@ else:
 rand_subtree(o, taxa_names, height=height)
 o.write(";\n")
 o.close()
-print(-random.random())
+print((-random.random()))
 
