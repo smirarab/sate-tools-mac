@@ -27,7 +27,7 @@ try:
 	fileobj = open(seqfn, 'rU')
 	sd.read(fileobj, file_format='FASTA', datatype=datatype)
 	alignment = sd.relabel_for_sate(make_names_safe=False)
-except Exception, x:
+except Exception as x:
 	raise Exception("Error reading file:\n%s\n" % str(x))
 
 if second_inp:
@@ -36,18 +36,18 @@ if second_inp:
 		fileobj = open(second_inp, 'rU')
 		sd.read(fileobj, file_format='FASTA', datatype=datatype)
 		alignment2 = sd.relabel_for_sate(make_names_safe=False)
-	except Exception, x:
+	except Exception as x:
 		raise Exception("Error reading file:\n%s\n" % str(x))
 else:
 	alignment2  = {}
 
-for k in alignment2.keys():
+for k in list(alignment2.keys()):
 	if k in alignment:
 		sys.exit("Taxon %s was found in both alignments" % k)
 alignment.update(alignment2)
 max_len = 0
 x = []
-for k, v in alignment.iteritems():
+for k, v in alignment.items():
 	gapless_v = ''.join(v.split('-'))
 	max_len = max(max_len, len(gapless_v))
 	x.append((k, gapless_v))
